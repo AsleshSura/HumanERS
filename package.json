@@ -1,0 +1,57 @@
+{
+  "name": "humaners",
+  "version": "1.0.0",
+  "description": "Multi-Sensory AI-Powered Communication & Survival System - Real-time emotion recognition through facial expressions, gestures, and audio",
+  "main": "index.html",
+  "scripts": {
+    "build": "npm run minify-html && npm run minify-css && npm run minify-js",
+    "minify-html": "html-minifier-terser --collapse-whitespace --remove-comments --minify-css --minify-js index.html -o index.min.html && html-minifier-terser --collapse-whitespace --remove-comments --minify-css --minify-js launcher.html -o launcher.min.html",
+    "minify-css": "cleancss -o style.min.css style.css",
+    "minify-js": "terser script.js -o script.min.js --compress --mangle && terser frontend.js -o frontend.min.js --compress --mangle",
+    "serve": "http-server -p 8000 -c-1",
+    "dev": "http-server -p 8000 -c-1 -o",
+    "lint": "eslint script.js frontend.js",
+    "test": "echo \"No tests specified yet\" && exit 0",
+    "deploy": "npm run build && gh-pages -d ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AsleshSura/HumanERS.git"
+  },
+  "keywords": [
+    "emotion-recognition",
+    "ai",
+    "computer-vision",
+    "facial-recognition",
+    "gesture-detection",
+    "communication-system",
+    "javascript",
+    "tensorflow",
+    "machine-learning",
+    "survival-system"
+  ],
+  "author": "AsleshSura",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AsleshSura/HumanERS/issues"
+  },
+  "homepage": "https://asleshsura.github.io/HumanERS/",
+  "devDependencies": {
+    "clean-css-cli": "^5.6.2",
+    "eslint": "^8.57.0",
+    "gh-pages": "^6.1.1",
+    "html-minifier-terser": "^7.2.0",
+    "http-server": "^14.1.1",
+    "terser": "^5.26.0"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie <= 11"
+  ]
+}

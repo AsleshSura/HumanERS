@@ -1,0 +1,72 @@
+{
+  "name": "HumanERS - Human Emotion Recognition System",
+  "short_name": "HumanERS",
+  "description": "Multi-Sensory AI-Powered Communication & Survival System for real-time emotion recognition",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1e3c72",
+  "theme_color": "#2a5298",
+  "orientation": "portrait-primary",
+  "scope": "./",
+  "lang": "en",
+  "categories": ["productivity", "utilities", "education"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192' style='background:%232a5298'><text y='.9em' font-size='120' text-anchor='middle' x='50%'>🌊</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' style='background:%232a5298'><text y='.9em' font-size='320' text-anchor='middle' x='50%'>🌊</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Main App",
+      "short_name": "Main",
+      "description": "Launch full emotion recognition system",
+      "url": "./index.html",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>",
+          "sizes": "any"
+        }
+      ]
+    },
+    {
+      "name": "Launcher",
+      "short_name": "Launch",
+      "description": "Open application launcher",
+      "url": "./launcher.html",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>",
+          "sizes": "any"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 600' style='background:linear-gradient(135deg,%231e3c72,%232a5298)'><text y='50%' font-size='60' text-anchor='middle' x='50%' fill='white'>🌊 HumanERS Demo</text></svg>",
+      "sizes": "800x600",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "HumanERS Main Interface"
+    }
+  ],
+  "features": [
+    "camera",
+    "microphone",
+    "motion-sensors"
+  ],
+  "prefer_related_applications": false
+}

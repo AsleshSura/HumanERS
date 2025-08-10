@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+# Allow all well-behaved web crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Disallow sensitive files
+Disallow: /.git/
+Disallow: /node_modules/
+Disallow: /.venv/
+Disallow: /*.log
+Disallow: /build/
+
+# Sitemap location
+Sitemap: https://asleshsura.github.io/HumanERS/sitemap.xml

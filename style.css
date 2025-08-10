@@ -1,0 +1,520 @@
+/* Canvas Positioning */
+#backgroundCanvas,
+#touchCanvas,
+#mainCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    pointer-events: none;
+}
+
+#touchCanvas {
+    z-index: 2;
+    pointer-events: auto;
+}
+
+#mainCanvas {
+    z-index: 3;
+    pointer-events: none;
+}
+
+/* Main Interface */
+#mainInterface {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    background: #000;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none !important;
+}
+
+/* Permission Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #001122, #003366);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    animation: modalFade 2s ease-in-out infinite alternate;
+}
+
+.modal-content {
+    text-align: center;
+    padding: 3rem;
+    border-radius: 20px;
+    background: rgba(0, 20, 40, 0.9);
+    border: 3px solid #00aaff;
+    box-shadow: 0 0 50px rgba(0, 170, 255, 0.5);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.permission-icon {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    animation: bounce 1.5s ease-in-out infinite;
+}
+
+.permission-symbols {
+    font-size: 2rem;
+    margin: 2rem 0;
+    animation: symbolRotate 3s ease-in-out infinite;
+}
+
+.start-btn {
+    font-size: 3rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(45deg, #ff4444, #ff8800);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 20px rgba(255, 68, 68, 0.4);
+}
+
+.start-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px rgba(255, 68, 68, 0.6);
+}
+
+/* Main Interface */
+#mainInterface {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Canvas Layers */
+#backgroundCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#touchCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+/* Status Indicators */
+#statusIndicators {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.status-dot {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background: rgba(50, 50, 50, 0.8);
+    border: 2px solid #666;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.status-dot.active {
+    background: rgba(0, 255, 0, 0.3);
+    border-color: #00ff00;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    animation: statusPulse 2s ease-in-out infinite;
+}
+
+.status-dot.error {
+    background: rgba(255, 0, 0, 0.3);
+    border-color: #ff0000;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+/* Threat Display */
+#threatDisplay {
+    position: fixed;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+#threatSymbol {
+    font-size: 4rem;
+    padding: 20px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+    transition: all 0.5s ease;
+    animation: symbolFloat 3s ease-in-out infinite;
+}
+
+#threatMeter {
+    width: 20px;
+    height: 200px;
+    background: linear-gradient(to top, 
+        #00ff00 0%, 
+        #88ff00 20%, 
+        #ffff00 40%, 
+        #ff8800 60%, 
+        #ff4400 80%, 
+        #ff0000 100%);
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+#threatMeter::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--meter-height, 80%);
+    background: rgba(0, 0, 0, 0.8);
+    transition: height 1s ease;
+}
+
+/* Particle Container */
+#particleContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 3;
+}
+
+.particle {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    animation: particleFloat 3s linear infinite;
+}
+
+/* Warning Overlay */
+#warningOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.warning-symbol {
+    font-size: 5rem;
+    opacity: 0;
+    transform: scale(0);
+    animation: warningAppear 1s ease-out forwards;
+}
+
+/* Animations */
+@keyframes modalFade {
+    0% { background: linear-gradient(135deg, #001122, #003366); }
+    100% { background: linear-gradient(135deg, #003366, #001122); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes symbolRotate {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
+@keyframes statusPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes symbolFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Gesture Tracking Animations */
+
+@keyframes warningAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.2) rotate(180deg);
+    }
+    100% {
+        opacity: 0.8;
+        transform: scale(1) rotate(360deg);
+    }
+}
+
+@keyframes screenShake {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5px, -5px); }
+    20% { transform: translate(5px, -5px); }
+    30% { transform: translate(-5px, 5px); }
+    40% { transform: translate(5px, 5px); }
+    50% { transform: translate(-5px, -5px); }
+    60% { transform: translate(5px, -5px); }
+    70% { transform: translate(-5px, 5px); }
+    80% { transform: translate(5px, 5px); }
+    90% { transform: translate(-5px, -5px); }
+}
+
+/* Threat Level Specific Styles */
+.danger-max {
+    animation: screenShake 0.5s infinite;
+}
+
+.danger-max #backgroundCanvas {
+    filter: contrast(150%) saturate(200%);
+}
+
+.danger-high #threatSymbol {
+    color: #ff4400;
+    box-shadow: 0 0 30px rgba(255, 68, 0, 0.8);
+}
+
+.caution #threatSymbol {
+    color: #ffaa00;
+    box-shadow: 0 0 20px rgba(255, 170, 0, 0.6);
+}
+
+.safe #threatSymbol {
+    color: #00ff88;
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.6);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .permission-icon {
+        font-size: 3rem;
+    }
+    
+    .permission-symbols {
+        font-size: 1.5rem;
+    }
+    
+    .start-btn {
+        font-size: 2.5rem;
+        padding: 0.8rem 1.5rem;
+    }
+    
+    #threatSymbol {
+        font-size: 3rem;
+        padding: 15px;
+    }
+    
+    #threatMeter {
+        height: 150px;
+        width: 15px;
+    }
+    
+    .status-dot {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+    
+    #statusIndicators {
+        top: 10px;
+        right: 10px;
+        gap: 8px;
+    }
+    
+    .warning-symbol {
+        font-size: 3rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        padding: 2rem;
+        margin: 1rem;
+    }
+    
+    #threatDisplay {
+        left: 10px;
+    }
+}
+
+/* Accessibility and Performance */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Dark mode and high contrast support */
+@media (prefers-contrast: high) {
+    .status-dot {
+        border-width: 3px;
+    }
+    
+    #threatMeter {
+        border-width: 3px;
+    }
+}
+
+/* Print styles (hide everything) */
+@media print {
+    body {
+        display: none;
+    }
+}
+
+/* Additional visual states */
+.system-loading {
+    pointer-events: none;
+}
+
+.system-loading #mainInterface {
+    opacity: 0.7;
+    transition: opacity 0.5s ease;
+}
+
+/* Touch feedback */
+.touch-ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.6), transparent);
+    transform: scale(0);
+    animation: rippleExpand 0.6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes rippleExpand {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Enhanced particle effects */
+.particle-danger {
+    background: radial-gradient(circle, #ff0000, #ff4400);
+    animation: particleDanger 2s linear infinite;
+}
+
+.particle-safe {
+    background: radial-gradient(circle, #00ff88, #88ffaa);
+    animation: particleSafe 3s linear infinite;
+}
+
+@keyframes particleDanger {
+    0% {
+        transform: translateY(100vh) rotate(0deg) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100px) rotate(720deg) scale(1.5);
+        opacity: 0;
+    }
+}
+
+@keyframes particleSafe {
+    0% {
+        transform: translateY(100vh) rotate(0deg) scale(0);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.8;
+    }
+    80% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg) scale(1);
+        opacity: 0;
+    }
+}

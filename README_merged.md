@@ -1,33 +1,8 @@
 # 🌊 HumanERS - Human Emotion Recognition System
 
-[![Deploy to GitHub Pages](https://github.com/AsleshSura/HumanERS/actions/workflows/deploy.yml/badge.svg)](https://github.com/AsleshSura/HumanERS/actions/workflows/deploy.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Production Ready](https://img.shields.io/badge/Production-Ready-brightgreen.svg)](https://asleshsura.github.io/HumanERS/)
-
-**🚀 [Live Demo](https://asleshsura.github.io/HumanERS/) | 📖 [Deployment Guide](DEPLOYMENT.md) | 🔒 [Security Policy](SECURITY.md)**
-
 **Multi-Sensory AI-Powered Communication & Survival System**
 
 An advanced real-time emotion recognition system that uses computer vision and sensor fusion to detect and visualize human emotional states through facial expressions, hand gestures, eye tracking, and device motion. Originally designed as an innovative survival communication system for scenarios where verbal communication is impossible.
-
-## ✨ Production Features
-
-### 🎯 Core Capabilities
-- **Real-time Emotion Detection** using Face-API.js and TensorFlow.js
-- **Hand Gesture Recognition** with ML-powered tracking
-- **Eye Movement & Gaze Tracking** for enhanced interaction
-- **Breathing Pattern Analysis** through audio processing
-- **Device Motion Integration** for mobile responsiveness
-- **Multi-Modal Sensor Fusion** with weighted algorithm
-
-### 🚀 Production Optimizations
-- ✅ **GitHub Pages Ready** - Automated deployment workflow
-- ✅ **Progressive Web App** - Installable with offline capabilities
-- ✅ **Performance Optimized** - Minified assets and efficient loading
-- ✅ **Mobile Responsive** - Works on all devices and screen sizes
-- ✅ **Privacy-First** - 100% client-side processing, no data collection
-- ✅ **Accessibility** - WCAG 2.1 compliant with ARIA labels
-- ✅ **SEO Optimized** - Complete meta tags and structured data
 
 ## 🎯 Project Concept
 
@@ -94,88 +69,46 @@ Psychological conditioning through carefully tuned frequencies that correlate wi
 
 ## 🚀 Getting Started
 
-### 🌐 Try It Now
-**Live Production Demo**: [https://asleshsura.github.io/HumanERS/](https://asleshsura.github.io/HumanERS/)
-
-### ⚡ Quick Deploy to GitHub Pages
-1. **Fork this repository** on GitHub
-2. **Enable GitHub Pages** in repository Settings → Pages → Source: "GitHub Actions"
-3. **Push to main branch** - automatic deployment will begin
-4. **Access your site** at `https://YOUR_USERNAME.github.io/HumanERS/`
-
-### 💻 Local Development
-```bash
-# Clone the repository
-git clone https://github.com/AsleshSura/HumanERS.git
-cd HumanERS
-
-# Option 1: Using Node.js (Recommended)
-npm install
-npm run dev  # Opens http://localhost:8000
-
-# Option 2: Using Python
-python -m http.server 8000
-
-# Option 3: Using any static server
-# Just serve the files over HTTP/HTTPS
-```
-
 ### Prerequisites
 - Modern web browser with WebRTC support (Chrome, Firefox, Safari, Edge)
 - Camera access permissions
 - Microphone access permissions
 - HTTPS connection (required for camera/microphone access)
 
-### 🛠️ Installation & Deployment
+### Installation
 
-#### For GitHub Pages (Production)
-1. **Fork the repository** to your GitHub account
-2. **Configure GitHub Pages**:
-   - Go to repository Settings → Pages
-   - Source: "GitHub Actions"
-   - The workflow will automatically deploy on push to main
-3. **Custom Domain** (Optional):
-   - Add `CNAME` file with your domain
-   - Configure DNS records
-   - Enable HTTPS in settings
+1. **Clone or Download** the repository to your local machine
+2. **Serve the files** using a local web server (required for camera access):
 
-#### For Local Development
-```bash
-# Install development dependencies
-npm install
+   **Option 1: Using Python**
+   ```bash
+   # Navigate to project directory
+   cd HumanERS
+   
+   # Python 3
+   python -m http.server 8000
+   
+   # Python 2
+   python -m SimpleHTTPServer 8000
+   ```
 
-# Start development server
-npm run dev
+   **Option 2: Using Node.js**
+   ```bash
+   # Install a simple HTTP server
+   npm install -g http-server
+   
+   # Navigate to project directory and start server
+   cd HumanERS
+   http-server
+   ```
 
-# Build optimized version
-npm run build
+   **Option 3: Using Live Server (VS Code)**
+   - Install the "Live Server" extension in VS Code
+   - Right-click on `index.html` and select "Open with Live Server"
 
-# Deploy to GitHub Pages
-npm run deploy
-```
-
-#### Alternative Local Servers
-```bash
-# Python 3
-python -m http.server 8000
-
-# Python 2  
-python -m SimpleHTTPServer 8000
-
-# Node.js http-server
-npx http-server -p 8000
-
-# PHP
-php -S localhost:8000
-
-# Live Server (VS Code Extension)
-# Right-click index.html → "Open with Live Server"
-```
-
-3. **Access the Application**:
-   - Navigate to `http://localhost:8000` (or your server's URL)
+3. **Open in Browser**
+   - Navigate to `http://localhost:8000` (or the port shown by your server)
    - Grant camera and microphone permissions when prompted
-   - The system will automatically load AI models and initialize
 
 ## 📱 How to Use
 

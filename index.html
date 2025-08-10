@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌊 HumanERS - Human Emotion Recognition System</title>
+    <meta name="description" content="Advanced real-time emotion recognition system using AI to detect and visualize human emotional states through facial expressions, hand gestures, eye tracking, and device motion.">
+    <meta name="keywords" content="emotion recognition, AI, facial detection, gesture recognition, eye tracking, communication, survival system">
+    <meta name="author" content="AsleshSura">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="HumanERS - Human Emotion Recognition System">
+    <meta property="og:description" content="Multi-Sensory AI-Powered Communication & Survival System">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://asleshsura.github.io/HumanERS/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2a5298">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="HumanERS">
+    
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Enhanced status indicators */
+        .status-dot {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .status-dot.active {
+            box-shadow: 0 0 10px #00ff00;
+        }
+        .status-dot.error {
+            box-shadow: 0 0 10px #ff0000;
+        }
+        
+        /* Loading indicator */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            color: white;
+            font-size: 1.2em;
+        }
+        
+        .loading-overlay.hidden {
+            display: none;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Better modal styling */
+        .modal-content {
+            animation: modalSlideIn 0.5s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Debug toggle */
+        .debug-toggle {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 9000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <div>Loading AI models... Please wait</div>
+    </div>
+
+    <!-- Permission Request Modal -->
+    <div id="permissionModal" class="modal">
+        <div class="modal-content">
+            <h2>🌊 HumanERS</h2>
+            <p>Enhanced Emotion Recognition System</p>
+            <div class="permission-icon">📹🎤</div>
+            <div class="permission-symbols">
+                👁️ ✋ 🎤 🎨
+            </div>
+            <p style="font-size: 14px; color: #aaa; margin: 20px 0;">
+                This system uses AI to detect emotions through facial expressions, 
+                gestures, and audio. All processing happens locally in your browser.
+            </p>
+            <button id="grantPermissions" class="start-btn">🚀 Start System</button>
+            <div style="margin-top: 15px;">
+                <button onclick="openDebugMode()" style="background: #333; color: #ccc; border: 1px solid #666; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+                    🔧 Debug Mode
+                </button>
+                <button onclick="openDemo()" style="background: #333; color: #ccc; border: 1px solid #666; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-left: 10px;">
+                    🎮 Demo Mode
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Interface -->
+    <div id="mainInterface" class="hidden">
+        <!-- Background Canvas for Dynamic Effects -->
+        <canvas id="backgroundCanvas"></canvas>
+        
+        <!-- Touch Canvas for Color Painting -->
+        <canvas id="touchCanvas"></canvas>
+        
+        <!-- Main Canvas for rendering (added for compatibility) -->
+        <canvas id="mainCanvas"></canvas>
+        
+        <!-- Video Feed (Hidden) -->
+        <video id="video" autoplay muted playsinline style="display: none;"></video>
+        
+        <!-- Status Indicators (Enhanced) -->
+        <div id="statusIndicators">
+            <div class="status-dot camera-status" title="Camera & Face Detection">📹</div>
+            <div class="status-dot mic-status" title="Microphone & Audio Analysis">🎤</div>
+            <div class="status-dot gesture-status" title="Hand Gesture Recognition">✋</div>
+            <div class="status-dot eye-status" title="Eye Tracking">👁️</div>
+            <div class="status-dot motion-status" title="Device Motion">📱</div>
+        </div>
+
+        <!-- Threat Level Display -->
+        <div id="threatDisplay">
+            <div id="threatSymbol">🏔️</div>
+            <div id="threatMeter"></div>
+        </div>
+
+        <!-- Particle System Container -->
+        <div id="particleContainer"></div>
+        
+        <!-- Warning Symbols Overlay -->
+        <div id="warningOverlay"></div>
+    </div>
+
+    <!-- Debug Toggle -->
+    <button class="debug-toggle" onclick="toggleDebugMode()">🔧 Debug</button>
+
+    <!-- AI Libraries with timeout handling -->
+    <script>
+        // Track loading progress
+        let librariesLoaded = 0;
+        const totalLibraries = 4;
+        
+        function updateLoadingProgress() {
+            librariesLoaded++;
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                const text = overlay.querySelector('div:last-child');
+                if (text) {
+                    text.textContent = `Loading AI models... (${librariesLoaded}/${totalLibraries})`;
+                }
+                
+                if (librariesLoaded >= totalLibraries) {
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                    }, 1000);
+                }
+            }
+        }
+        
+        // Load libraries with error handling
+        function loadScript(src, name) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => {
+                    console.log(`✅ ${name} loaded successfully`);
+                    updateLoadingProgress();
+                    resolve();
+                };
+                script.onerror = () => {
+                    console.error(`❌ Failed to load ${name}`);
+                    updateLoadingProgress();
+                    resolve(); // Still resolve to continue loading other scripts
+                };
+                
+                // Timeout after 15 seconds
+                setTimeout(() => {
+                    if (!script.onload) {
+                        console.warn(`⏰ ${name} loading timeout`);
+                        updateLoadingProgress();
+                        resolve();
+                    }
+                }, 15000);
+                
+                document.head.appendChild(script);
+            });
+        }
+        
+        // Load all libraries
+        Promise.all([
+            loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js', 'TensorFlow.js'),
+            loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose@0.0.6/dist/handpose.min.js', 'HandPose'),
+            loadScript('https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js', 'Face-API.js'),
+            loadScript('https://webgazer.cs.brown.edu/webgazer.js', 'WebGazer')
+        ]).then(() => {
+            console.log('🎉 All AI libraries loaded');
+        }).catch(error => {
+            console.error('❌ Error loading AI libraries:', error);
+        });
+    </script>
+    
+    <!-- Utility functions -->
+    <script>
+        function openDebugMode() {
+            window.open('debug.html', '_blank');
+        }
+        
+        function openDemo() {
+            window.open('demo.html', '_blank');
+        }
+        
+        function toggleDebugMode() {
+            if (window.survivalSystem) {
+                window.survivalSystem.debugMode = !window.survivalSystem.debugMode;
+                console.log('Debug mode:', window.survivalSystem.debugMode ? 'ON' : 'OFF');
+            }
+        }
+        
+        // Quick fix to ensure the permission modal works immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            const startBtn = document.getElementById('grantPermissions');
+            const modal = document.getElementById('permissionModal');
+            const mainInterface = document.getElementById('mainInterface');
+            
+            if (startBtn) {
+                startBtn.addEventListener('click', function() {
+                    console.log('🚀 Start button clicked');
+                    
+                    // Show loading overlay
+                    const loadingOverlay = document.getElementById('loadingOverlay');
+                    if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+                    
+                    // Hide modal and show main interface immediately
+                    modal.classList.add('hidden');
+                    mainInterface.classList.remove('hidden');
+                    
+                    // Initialize the system
+                    if (window.survivalSystem) {
+                        window.survivalSystem.requestPermissions().finally(() => {
+                            // Hide loading overlay when done
+                            if (loadingOverlay) loadingOverlay.classList.add('hidden');
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- Main Application Script -->
+    <script src="script.js"></script>
+</body>
+</html>

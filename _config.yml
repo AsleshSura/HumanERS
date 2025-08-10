@@ -1,0 +1,44 @@
+# GitHub Pages Configuration
+url: "https://asleshsura.github.io"
+baseurl: "/HumanERS"
+
+# Site settings
+title: "HumanERS - Human Emotion Recognition System"
+description: "Multi-Sensory AI-Powered Communication & Survival System"
+author: "AsleshSura"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+permalink: pretty
+
+# Include static files
+include:
+  - "_*"
+  - ".nojekyll"
+
+# Exclude files from processing
+exclude:
+  - Dockerfile
+  - docker-compose.yml
+  - requirements.txt
+  - app.py
+  - .venv/
+  - node_modules/
+  - "*.py"
+  - "*.md"
+  - ".git*"
+
+# Plugins
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
+# SEO and social
+social:
+  name: AsleshSura
+  links:
+    - https://github.com/AsleshSura
+
+# Collections
+collections_dir: collections

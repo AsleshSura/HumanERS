@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌊 HumanERS - Human Emotion Recognition System</title>
+    <meta name="description" content="Multi-Sensory AI-Powered Communication & Survival System - Real-time emotion recognition through facial expressions, gestures, and audio">
+    <meta name="keywords" content="emotion recognition, AI, computer vision, facial recognition, gesture detection, communication system">
+    <meta name="author" content="AsleshSura">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="HumanERS - Human Emotion Recognition System">
+    <meta property="og:description" content="Advanced real-time emotion recognition system using AI for cross-language communication">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://asleshsura.github.io/HumanERS/">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2a5298">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="HumanERS">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+        
+        .version-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #00ff88;
+        }
+        
+        .card p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .launch-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(45deg, #00ff88, #00cc6a);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .launch-btn:hover {
+            background: linear-gradient(45deg, #00cc6a, #00aa55);
+            transform: scale(1.05);
+        }
+        
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .feature {
+            background: rgba(0, 255, 136, 0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .recommended {
+            border: 2px solid #00ff88;
+            position: relative;
+        }
+        
+        .recommended::before {
+            content: "RECOMMENDED";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #00ff88;
+            color: #1e3c72;
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .status {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .troubleshooting {
+            margin-top: 2rem;
+        }
+        
+        .troubleshooting a {
+            color: #00ff88;
+            text-decoration: none;
+        }
+        
+        .troubleshooting a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧠 HumanERS</h1>
+        <p class="subtitle">Human Emotion Recognition System</p>
+        
+        <div class="version-cards">
+            <div class="card recommended">
+                <h2>🎮 Full AI Mode</h2>
+                <div class="features">
+                    <span class="feature">📹 Camera</span>
+                    <span class="feature">� Microphone</span>
+                    <span class="feature">👁️ Eye Tracking</span>
+                    <span class="feature">✨ Enhanced</span>
+                </div>
+                <p>Complete emotion recognition using camera, microphone, and AI models. Features enhanced error handling, fallback modes, and demo capabilities built-in. Real facial emotion detection and gesture recognition with graceful degradation.</p>
+                <a href="index.html" class="launch-btn">Launch Main App</a>
+            </div>
+            
+            <div class="card">
+                <h2>🐍 Flask Backend Mode</h2>
+                <div class="features">
+                    <span class="feature">⚡ Server-Side AI</span>
+                    <span class="feature">🔧 Python Backend</span>
+                    <span class="feature">🎯 OpenCV</span>
+                </div>
+                <p>Alternative interface that connects to Python Flask backend for AI processing. Requires running the Flask server first. Uses OpenCV and server-side processing for emotion detection.</p>
+                <a href="flask-frontend.html" class="launch-btn">Launch Flask Mode</a>
+            </div>
+        </div>
+        
+        <div class="status">
+            <strong>Server Status:</strong> ✅ Running on <code>http://127.0.0.1:8080</code><br>
+            <strong>Browser:</strong> <span id="browserInfo"></span><br>
+            <strong>Requirements:</strong> Modern browser with Canvas support
+        </div>
+        
+        <div class="troubleshooting">
+            📖 Having issues? Check the <a href="TROUBLESHOOTING.md" target="_blank">Troubleshooting Guide</a>
+        </div>
+    </div>
+    
+    <script>
+        // Show browser info
+        document.getElementById('browserInfo').textContent = navigator.userAgent.split(' ').slice(-1)[0];
+        
+        // Check Canvas support
+        function checkCanvasSupport() {
+            const canvas = document.createElement('canvas');
+            return !!(canvas.getContext && canvas.getContext('2d'));
+        }
+        
+        if (!checkCanvasSupport()) {
+            document.querySelector('.status').innerHTML += '<br><strong style="color: #ff4444;">⚠️ Warning:</strong> Canvas not supported in this browser';
+        }
+        
+        // Add click tracking
+        document.querySelectorAll('.launch-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                console.log('Launching:', this.href);
+            });
+        });
+    </script>
+</body>
+</html>
