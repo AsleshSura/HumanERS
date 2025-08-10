@@ -27,6 +27,17 @@ class SurvivalSystem {
         this.eyeScore = 0.2;
         this.motionScore = 0.2;
         
+        // Current emotion values
+        this.currentEmotions = {
+            happy: 0,
+            sad: 0,
+            angry: 0,
+            fearful: 0,
+            surprised: 0,
+            neutral: 0.5,
+            disgusted: 0
+        };
+        
         // System state
         this.fallbackMode = false;
         this.debugMode = false;
@@ -81,6 +92,13 @@ class SurvivalSystem {
             this.setupEventListeners();
             this.setupCanvas();
             this.setupAudioContext();
+            
+            // Initialize emotion display
+            this.updateEmotionDisplay(this.currentEmotions);
+            
+            // Start emotion simulation immediately for demo purposes
+            this.startEmotionSimulation();
+            
             this.showUserMessage('System ready! Click the start button to begin.', 'info');
             
             // Start the main loop
@@ -94,6 +112,9 @@ class SurvivalSystem {
             // Continue with minimal functionality
             this.fallbackMode = true;
             this.initialized = true;
+            
+            // Still show emotion display in fallback mode
+            this.updateEmotionDisplay(this.currentEmotions);
         }
     }
 
@@ -193,6 +214,16 @@ class SurvivalSystem {
             if (modal) modal.classList.add('hidden');
             if (mainInterface) mainInterface.classList.remove('hidden');
             
+            // Show emotion panel
+            const emotionPanel = document.getElementById('emotionPanel');
+            console.log('🔍 Looking for emotion panel:', emotionPanel);
+            if (emotionPanel) {
+                emotionPanel.classList.remove('hidden');
+                console.log('✅ Emotion panel displayed');
+            } else {
+                console.log('❌ Emotion panel not found');
+            }
+            
             // Start the system
             this.startSystem();
             
@@ -208,6 +239,16 @@ class SurvivalSystem {
             this.fallbackMode = true;
             if (modal) modal.classList.add('hidden');
             if (mainInterface) mainInterface.classList.remove('hidden');
+            
+            // Show emotion panel in fallback mode too
+            const emotionPanel = document.getElementById('emotionPanel');
+            console.log('🔍 Fallback mode - Looking for emotion panel:', emotionPanel);
+            if (emotionPanel) {
+                emotionPanel.classList.remove('hidden');
+                console.log('✅ Fallback mode - Emotion panel displayed');
+            } else {
+                console.log('❌ Fallback mode - Emotion panel not found');
+            }
             this.startSystem();
         }
     }
@@ -552,12 +593,35 @@ class SurvivalSystem {
     // Fallback simulation methods for when AI models fail
     startEmotionSimulation() {
         setInterval(() => {
-            // Simulate emotion changes based on user interaction
-            const baseEmotion = 0.2;
-            const randomVariation = (Math.random() - 0.5) * 0.1;
-            const interactionBoost = this.touchPoints.length > 0 ? 0.2 : 0;
+            // Simulate realistic emotion changes based on user interaction and time
+            const time = Date.now() / 1000;
+            const interactionLevel = this.touchPoints.length;
             
-            this.emotionScore = Math.max(0, Math.min(1, baseEmotion + randomVariation + interactionBoost));
+            // Base emotions that slowly change over time
+            this.currentEmotions = {
+                happy: Math.max(0, Math.min(1, 0.3 + Math.sin(time * 0.1) * 0.2 + (interactionLevel > 0 ? 0.3 : 0))),
+                sad: Math.max(0, Math.min(1, 0.1 + Math.sin(time * 0.05) * 0.1)),
+                angry: Math.max(0, Math.min(1, 0.05 + (interactionLevel > 3 ? 0.4 : 0) + Math.random() * 0.1)),
+                fearful: Math.max(0, Math.min(1, 0.1 + (this.motionScore > 0.5 ? 0.3 : 0))),
+                surprised: Math.max(0, Math.min(1, 0.05 + (interactionLevel > 0 ? 0.2 : 0) * Math.random())),
+                neutral: Math.max(0, Math.min(1, 0.4 - interactionLevel * 0.1)),
+                disgusted: Math.max(0, Math.min(1, 0.02 + Math.random() * 0.05))
+            };
+            
+            // Update the display
+            this.updateEmotionDisplay(this.currentEmotions);
+            
+            // Calculate emotion score for threat level
+            const fearScore = this.currentEmotions.fearful + this.currentEmotions.surprised + this.currentEmotions.angry;
+            this.emotionScore = Math.min(1.0, fearScore);
+            
+            // Debug logging
+            if (this.debugMode) {
+                const dominantEmotion = Object.keys(this.currentEmotions).reduce((a, b) => 
+                    this.currentEmotions[a] > this.currentEmotions[b] ? a : b
+                );
+                this.log(`🎭 Simulated emotion: ${dominantEmotion} (${(this.currentEmotions[dominantEmotion] * 100).toFixed(1)}%)`);
+            }
         }, 1000);
     }
 
@@ -628,14 +692,80 @@ class SurvivalSystem {
 
     processEmotions(expressions) {
         try {
+            // Store individual emotion values
+            this.currentEmotions = {
+                happy: expressions.happy || 0,
+                sad: expressions.sad || 0,
+                angry: expressions.angry || 0,
+                fearful: expressions.fearful || 0,
+                surprised: expressions.surprised || 0,
+                neutral: expressions.neutral || 0,
+                disgusted: expressions.disgusted || 0
+            };
+            
+            // Update emotion display
+            this.updateEmotionDisplay(this.currentEmotions);
+            
+            // Calculate threat level based on emotions
             const fearScore = (expressions.fearful || 0) + (expressions.surprised || 0) + (expressions.angry || 0);
             const calmScore = (expressions.happy || 0) + (expressions.neutral || 0);
             
             // Fear = high danger, calm = safety
             this.emotionScore = Math.min(1.0, fearScore * 2);
             
+            // Log detected emotions if in debug mode
+            if (this.debugMode) {
+                const dominantEmotion = Object.keys(this.currentEmotions).reduce((a, b) => 
+                    this.currentEmotions[a] > this.currentEmotions[b] ? a : b
+                );
+                this.log(`🎭 Dominant emotion: ${dominantEmotion} (${(this.currentEmotions[dominantEmotion] * 100).toFixed(1)}%)`);
+            }
+            
         } catch (error) {
             this.log('❌ Emotion processing error:', error.message);
+        }
+    }
+
+    updateEmotionDisplay(emotions) {
+        try {
+            // Update individual emotion bars
+            const emotionNames = ['happy', 'sad', 'angry', 'fearful', 'surprised', 'neutral', 'disgusted'];
+            
+            emotionNames.forEach(emotion => {
+                const value = (emotions[emotion] || 0) * 100;
+                const barElement = document.getElementById(`${emotion}-bar`);
+                const valueElement = document.getElementById(`${emotion}-value`);
+                
+                if (barElement && valueElement) {
+                    barElement.style.width = `${value}%`;
+                    valueElement.textContent = `${value.toFixed(1)}%`;
+                }
+            });
+            
+            // Calculate overall intensity
+            const maxEmotion = Math.max(...Object.values(emotions));
+            const overallIntensity = maxEmotion * 100;
+            
+            // Update intensity meter
+            const intensityFill = document.getElementById('intensity-fill');
+            const intensityValue = document.getElementById('intensity-value');
+            
+            if (intensityFill && intensityValue) {
+                intensityFill.style.width = `${overallIntensity}%`;
+                intensityValue.textContent = `${overallIntensity.toFixed(1)}%`;
+                
+                // Change intensity color based on level
+                if (overallIntensity > 70) {
+                    intensityValue.style.color = '#ff4444';
+                } else if (overallIntensity > 40) {
+                    intensityValue.style.color = '#ffaa00';
+                } else {
+                    intensityValue.style.color = '#00ff88';
+                }
+            }
+            
+        } catch (error) {
+            this.log('❌ Emotion display error:', error.message);
         }
     }
 
@@ -755,6 +885,7 @@ class SurvivalSystem {
                 this.updateParticles();
                 this.updateTouchPoints();
                 this.updateThreatLevel();
+                this.updateEmotionDisplay(this.currentEmotions); // Update emotion display
                 this.render();
             }
             requestAnimationFrame(loop);
@@ -956,8 +1087,16 @@ document.addEventListener('DOMContentLoaded', () => {
         // Try to show interface anyway for demo mode
         const modal = document.getElementById('permissionModal');
         const mainInterface = document.getElementById('mainInterface');
+        const emotionPanel = document.getElementById('emotionPanel');
         if (modal) modal.classList.add('hidden');
         if (mainInterface) mainInterface.classList.remove('hidden');
+        console.log('🔍 Error fallback - Looking for emotion panel:', emotionPanel);
+        if (emotionPanel) {
+            emotionPanel.classList.remove('hidden');
+            console.log('✅ Error fallback - Emotion panel displayed');
+        } else {
+            console.log('❌ Error fallback - Emotion panel not found');
+        }
     }
 });
 

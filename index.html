@@ -3,27 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌊 HumanERS - Human Emotion Recognition System</title>
-    <meta name="description" content="Advanced real-time emotion recognition system using AI to detect and visualize human emotional states through facial expressions, hand gestures, eye tracking, and device motion.">
-    <meta name="keywords" content="emotion recognition, AI, facial detection, gesture recognition, eye tracking, communication, survival system">
-    <meta name="author" content="AsleshSura">
-    
-    <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="HumanERS - Human Emotion Recognition System">
-    <meta property="og:description" content="Multi-Sensory AI-Powered Communication & Survival System">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://asleshsura.github.io/HumanERS/">
-    
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌊</text></svg>">
-    
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#2a5298">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="HumanERS">
-    
+    <title>🌊 HumanERS - Enhanced Emotion Recognition</title>
     <link rel="stylesheet" href="style.css">
     <style>
         /* Enhanced status indicators */
@@ -165,6 +145,71 @@
         
         <!-- Warning Symbols Overlay -->
         <div id="warningOverlay"></div>
+    </div>
+
+    <!-- Emotion Display Panel (Hidden Initially) -->
+    <div id="emotionPanel" class="emotion-panel hidden">
+        <h3>🎭 Detected Emotions</h3>
+        <div class="emotion-bars">
+            <div class="emotion-bar">
+                <label>😊 Happy:</label>
+                <div class="bar-container">
+                    <div class="bar-fill" id="happy-bar"></div>
+                    <span class="bar-value" id="happy-value">0%</span>
+                </div>
+            </div>
+            <div class="emotion-bar">
+                <label>😢 Sad:</label>
+                <div class="bar-container">
+                    <div class="bar-fill" id="sad-bar"></div>
+                    <span class="bar-value" id="sad-value">0%</span>
+                </div>
+            </div>
+            <div class="emotion-bar">
+                <label>😠 Angry:</label>
+                <div class="bar-container">
+                    <div class="bar-fill" id="angry-bar"></div>
+                    <span class="bar-value" id="angry-value">0%</span>
+                </div>
+            </div>
+            <div class="emotion-bar">
+                <label>😱 Fear:</label>
+                <div class="bar-container">
+                    <div class="bar-fill" id="fearful-bar"></div>
+                    <span class="bar-value" id="fearful-value">0%</span>
+                </div>
+            </div>
+            <div class="emotion-bar">
+                <label>😮 Surprised:</label>
+                <div class="bar-container">
+                    <div class="bar-fill" id="surprised-bar"></div>
+                    <span class="bar-value" id="surprised-value">0%</span>
+                </div>
+            </div>
+            <div class="emotion-bar">
+                <label>😐 Neutral:</label>
+                <div class="bar-container">
+                    <div class="bar-fill" id="neutral-bar"></div>
+                    <span class="bar-value" id="neutral-value">0%</span>
+                </div>
+            </div>
+            <div class="emotion-bar">
+                <label>🤢 Disgusted:</label>
+                <div class="bar-container">
+                    <div class="bar-fill" id="disgusted-bar"></div>
+                    <span class="bar-value" id="disgusted-value">0%</span>
+                </div>
+            </div>
+        </div>
+        <div class="overall-intensity">
+            <label>🌡️ Overall Intensity:</label>
+            <div class="intensity-meter">
+                <div class="bar-container">
+                    <div class="intensity-fill" id="intensity-fill"></div>
+                </div>
+                <span class="intensity-value" id="intensity-value">20%</span>
+            </div>
+        </div>
     </div>
 
     <!-- Debug Toggle -->
