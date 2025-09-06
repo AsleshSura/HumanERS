@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HumanERS - Launcher</title>
+    <title>HumanERS - AI Emotion Recognition System</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a0033">
     <style>
         * {
             margin: 0;
@@ -13,7 +15,7 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, #1a0033, #2d1b69);
             color: white;
             min-height: 100vh;
             display: flex;
@@ -24,7 +26,7 @@
         }
         
         .container {
-            max-width: 800px;
+            max-width: 600px;
             text-align: center;
         }
         
@@ -40,14 +42,88 @@
             opacity: 0.9;
         }
         
-        .version-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
+        .launch-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.5rem;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
         
-        .card {
+        .launch-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.2);
+        }
+        
+        .features {
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        
+        .feature {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .subtitle { font-size: 1rem; }
+            .launch-button { 
+                padding: 15px 30px; 
+                font-size: 1.2rem; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>HumanERS</h1>
+        <p class="subtitle">Multi-Sensory AI Communication System</p>
+        
+        <a href="index.html" class="launch-button">
+            🚀 Launch System
+        </a>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">😊</div>
+                <h3>Emotion Detection</h3>
+                <p>Real-time facial emotion recognition</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">✋</div>
+                <h3>Gesture Recognition</h3>
+                <p>Hand tracking and gesture analysis</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">👁️</div>
+                <h3>Eye Tracking</h3>
+                <p>Gaze direction and attention monitoring</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎨</div>
+                <h3>Visual Communication</h3>
+                <p>Interactive canvas and visual feedback</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
             background: rgba(255, 255, 255, 0.1);
             border-radius: 15px;
             padding: 2rem;

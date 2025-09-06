@@ -1,0 +1,41 @@
+{
+  "name": "humaners",
+  "version": "1.0.0",
+  "description": "Multi-Sensory AI-Powered Communication & Survival System",
+  "main": "index.html",
+  "scripts": {
+    "build": "npm run minify-html && npm run minify-css && npm run minify-js",
+    "minify-html": "html-minifier-terser --collapse-whitespace --remove-comments index.html -o index.min.html && html-minifier-terser --collapse-whitespace --remove-comments launcher.html -o launcher.min.html",
+    "minify-css": "cleancss -o style.min.css style.css",
+    "minify-js": "terser script.js -o script.min.js --compress --mangle",
+    "serve": "http-server -p 8000 -c-1",
+    "dev": "http-server -p 8000 -c-1 -o",
+    "deploy": "npm run build && gh-pages -d ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AsleshSura/HumanERS.git"
+  },
+  "keywords": [
+    "emotion-recognition",
+    "ai",
+    "computer-vision",
+    "javascript",
+    "tensorflow",
+    "machine-learning"
+  ],
+  "author": "AsleshSura",
+  "license": "MIT",
+  "homepage": "https://asleshsura.github.io/HumanERS/",
+  "devDependencies": {
+    "clean-css-cli": "^5.6.2",
+    "gh-pages": "^6.1.1",
+    "html-minifier-terser": "^7.2.0",
+    "http-server": "^14.1.1",
+    "terser": "^5.26.0"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

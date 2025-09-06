@@ -212,6 +212,34 @@
         </div>
     </div>
 
+    <!-- Debug Panel -->
+    <div id="debugPanel" class="debug-panel" style="
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        background: rgba(0, 0, 0, 0.9);
+        color: #00ff00;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        max-width: 300px;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #333;
+        z-index: 9000;
+        display: block;
+    ">
+        <div style="color: #fff; font-weight: bold; margin-bottom: 10px;">🔧 Debug Info</div>
+        <div id="debugContent">
+            <div>Touch Points: <span id="debug-touch">0</span></div>
+            <div>Audio Level: <span id="debug-audio">0%</span></div>
+            <div>Motion Score: <span id="debug-motion">0%</span></div>
+            <div>Detection Mode: <span id="debug-mode">Initializing...</span></div>
+            <div>Threat Level: <span id="debug-threat">0%</span></div>
+        </div>
+    </div>
+
     <!-- Debug Toggle -->
     <button class="debug-toggle" onclick="toggleDebugMode()">🔧 Debug</button>
 
@@ -291,11 +319,45 @@
         }
         
         function toggleDebugMode() {
+            const debugPanel = document.getElementById('debugPanel');
+            if (debugPanel) {
+                debugPanel.style.display = debugPanel.style.display === 'none' ? 'block' : 'none';
+            }
+            
             if (window.survivalSystem) {
                 window.survivalSystem.debugMode = !window.survivalSystem.debugMode;
                 console.log('Debug mode:', window.survivalSystem.debugMode ? 'ON' : 'OFF');
             }
         }
+        
+        // Update debug panel periodically
+        setInterval(() => {
+            if (window.survivalSystem) {
+                const sys = window.survivalSystem;
+                
+                // Update debug display elements if they exist
+                const debugTouch = document.getElementById('debug-touch');
+                const debugAudio = document.getElementById('debug-audio');
+                const debugMotion = document.getElementById('debug-motion');
+                const debugMode = document.getElementById('debug-mode');
+                const debugThreat = document.getElementById('debug-threat');
+                
+                if (debugTouch) debugTouch.textContent = sys.touchPoints ? sys.touchPoints.length : 0;
+                if (debugAudio) debugAudio.textContent = sys.audioLevel ? (sys.audioLevel * 100).toFixed(1) + '%' : '0%';
+                if (debugMotion) debugMotion.textContent = sys.motionScore ? (sys.motionScore * 100).toFixed(1) + '%' : '0%';
+                if (debugThreat) debugThreat.textContent = sys.threatLevel ? (sys.threatLevel * 100).toFixed(1) + '%' : '0%';
+                
+                if (debugMode) {
+                    let mode = 'Simulation';
+                    if (sys.permissions && sys.permissions.camera && sys.models && sys.models.faceApi && sys.models.faceApi.loaded) {
+                        mode = 'AI Face Detection';
+                    } else if (sys.permissions && sys.permissions.camera) {
+                        mode = 'Camera + Simulation';
+                    }
+                    debugMode.textContent = mode;
+                }
+            }
+        }, 500);
         
         // Quick fix to ensure the permission modal works immediately
         document.addEventListener('DOMContentLoaded', function() {

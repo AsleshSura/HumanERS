@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://asleshsura.github.io/HumanERS/sitemap.xml

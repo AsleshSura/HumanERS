@@ -1,0 +1,173 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>🌊 HumanERS - Enhanced Emotion Recognition</title><link rel="stylesheet" href="style.css"><style>/* Enhanced status indicators */
+        .status-dot {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .status-dot.active {
+            box-shadow: 0 0 10px #00ff00;
+        }
+        .status-dot.error {
+            box-shadow: 0 0 10px #ff0000;
+        }
+        
+        /* Loading indicator */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            color: white;
+            font-size: 1.2em;
+        }
+        
+        .loading-overlay.hidden {
+            display: none;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Better modal styling */
+        .modal-content {
+            animation: modalSlideIn 0.5s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Debug toggle */
+        .debug-toggle {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 1px solid #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            z-index: 9000;
+        }</style></head><body><div id="loadingOverlay" class="loading-overlay"><div class="spinner"></div><div>Loading AI models... Please wait</div></div><div id="permissionModal" class="modal"><div class="modal-content"><h2>🌊 HumanERS</h2><p>Enhanced Emotion Recognition System</p><div class="permission-icon">📹🎤</div><div class="permission-symbols">👁️ ✋ 🎤 🎨</div><p style="font-size: 14px; color: #aaa; margin: 20px 0;">This system uses AI to detect emotions through facial expressions, gestures, and audio. All processing happens locally in your browser.</p><button id="grantPermissions" class="start-btn">🚀 Start System</button><div style="margin-top: 15px;"><button onclick="openDebugMode()" style="background: #333; color: #ccc; border: 1px solid #666; padding: 8px 12px; border-radius: 4px; cursor: pointer;">🔧 Debug Mode</button> <button onclick="openDemo()" style="background: #333; color: #ccc; border: 1px solid #666; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-left: 10px;">🎮 Demo Mode</button></div></div></div><div id="mainInterface" class="hidden"><canvas id="backgroundCanvas"></canvas><canvas id="touchCanvas"></canvas><canvas id="mainCanvas"></canvas><video id="video" autoplay muted playsinline style="display: none;"></video><div id="statusIndicators"><div class="status-dot camera-status" title="Camera & Face Detection">📹</div><div class="status-dot mic-status" title="Microphone & Audio Analysis">🎤</div><div class="status-dot gesture-status" title="Hand Gesture Recognition">✋</div><div class="status-dot eye-status" title="Eye Tracking">👁️</div><div class="status-dot motion-status" title="Device Motion">📱</div></div><div id="threatDisplay"><div id="threatSymbol">🏔️</div><div id="threatMeter"></div></div><div id="particleContainer"></div><div id="warningOverlay"></div></div><div id="emotionPanel" class="emotion-panel hidden"><h3>🎭 Detected Emotions</h3><div class="emotion-bars"><div class="emotion-bar"><label>😊 Happy:</label><div class="bar-container"><div class="bar-fill" id="happy-bar"></div><span class="bar-value" id="happy-value">0%</span></div></div><div class="emotion-bar"><label>😢 Sad:</label><div class="bar-container"><div class="bar-fill" id="sad-bar"></div><span class="bar-value" id="sad-value">0%</span></div></div><div class="emotion-bar"><label>😠 Angry:</label><div class="bar-container"><div class="bar-fill" id="angry-bar"></div><span class="bar-value" id="angry-value">0%</span></div></div><div class="emotion-bar"><label>😱 Fear:</label><div class="bar-container"><div class="bar-fill" id="fearful-bar"></div><span class="bar-value" id="fearful-value">0%</span></div></div><div class="emotion-bar"><label>😮 Surprised:</label><div class="bar-container"><div class="bar-fill" id="surprised-bar"></div><span class="bar-value" id="surprised-value">0%</span></div></div><div class="emotion-bar"><label>😐 Neutral:</label><div class="bar-container"><div class="bar-fill" id="neutral-bar"></div><span class="bar-value" id="neutral-value">0%</span></div></div><div class="emotion-bar"><label>🤢 Disgusted:</label><div class="bar-container"><div class="bar-fill" id="disgusted-bar"></div><span class="bar-value" id="disgusted-value">0%</span></div></div></div><div class="overall-intensity"><label>🌡️ Overall Intensity:</label><div class="intensity-meter"><div class="bar-container"><div class="intensity-fill" id="intensity-fill"></div></div><span class="intensity-value" id="intensity-value">20%</span></div></div></div><button class="debug-toggle" onclick="toggleDebugMode()">🔧 Debug</button><script>// Track loading progress
+        let librariesLoaded = 0;
+        const totalLibraries = 4;
+        
+        function updateLoadingProgress() {
+            librariesLoaded++;
+            const overlay = document.getElementById('loadingOverlay');
+            if (overlay) {
+                const text = overlay.querySelector('div:last-child');
+                if (text) {
+                    text.textContent = `Loading AI models... (${librariesLoaded}/${totalLibraries})`;
+                }
+                
+                if (librariesLoaded >= totalLibraries) {
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                    }, 1000);
+                }
+            }
+        }
+        
+        // Load libraries with error handling
+        function loadScript(src, name) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.onload = () => {
+                    console.log(`✅ ${name} loaded successfully`);
+                    updateLoadingProgress();
+                    resolve();
+                };
+                script.onerror = () => {
+                    console.error(`❌ Failed to load ${name}`);
+                    updateLoadingProgress();
+                    resolve(); // Still resolve to continue loading other scripts
+                };
+                
+                // Timeout after 15 seconds
+                setTimeout(() => {
+                    if (!script.onload) {
+                        console.warn(`⏰ ${name} loading timeout`);
+                        updateLoadingProgress();
+                        resolve();
+                    }
+                }, 15000);
+                
+                document.head.appendChild(script);
+            });
+        }
+        
+        // Load all libraries
+        Promise.all([
+            loadScript('https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js', 'TensorFlow.js'),
+            loadScript('https://cdn.jsdelivr.net/npm/@tensorflow-models/handpose@0.0.6/dist/handpose.min.js', 'HandPose'),
+            loadScript('https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js', 'Face-API.js'),
+            loadScript('https://webgazer.cs.brown.edu/webgazer.js', 'WebGazer')
+        ]).then(() => {
+            console.log('🎉 All AI libraries loaded');
+        }).catch(error => {
+            console.error('❌ Error loading AI libraries:', error);
+        });</script><script>function openDebugMode() {
+            window.open('debug.html', '_blank');
+        }
+        
+        function openDemo() {
+            window.open('demo.html', '_blank');
+        }
+        
+        function toggleDebugMode() {
+            if (window.survivalSystem) {
+                window.survivalSystem.debugMode = !window.survivalSystem.debugMode;
+                console.log('Debug mode:', window.survivalSystem.debugMode ? 'ON' : 'OFF');
+            }
+        }
+        
+        // Quick fix to ensure the permission modal works immediately
+        document.addEventListener('DOMContentLoaded', function() {
+            const startBtn = document.getElementById('grantPermissions');
+            const modal = document.getElementById('permissionModal');
+            const mainInterface = document.getElementById('mainInterface');
+            
+            if (startBtn) {
+                startBtn.addEventListener('click', function() {
+                    console.log('🚀 Start button clicked');
+                    
+                    // Show loading overlay
+                    const loadingOverlay = document.getElementById('loadingOverlay');
+                    if (loadingOverlay) loadingOverlay.classList.remove('hidden');
+                    
+                    // Hide modal and show main interface immediately
+                    modal.classList.add('hidden');
+                    mainInterface.classList.remove('hidden');
+                    
+                    // Initialize the system
+                    if (window.survivalSystem) {
+                        window.survivalSystem.requestPermissions().finally(() => {
+                            // Hide loading overlay when done
+                            if (loadingOverlay) loadingOverlay.classList.add('hidden');
+                        });
+                    }
+                });
+            }
+        });</script><script src="script.js"></script></body></html>
